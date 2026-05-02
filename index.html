@@ -252,124 +252,306 @@ td select.red-select{border:1px solid rgba(248,113,113,.6);}
     <div class="section-title">📋 법인세 세무조정내용 요약표 (3개 사업연도)</div>
     <div class="info-box">빨간색 항목은 직접 입력 필수. 나머지는 세무조정계산서에서 확인 후 입력. 금액은 원(₩) 단위. 음수는 "-"로 입력.</div>
 
+
     <div class="year-tabs">
       <div class="ytab active" onclick="showYear(1)">1년전 (×3 가중)</div>
       <div class="ytab" onclick="showYear(2)">2년전 (×2 가중)</div>
       <div class="ytab" onclick="showYear(3)">3년전 (×1 가중)</div>
     </div>
-
     <!-- Year 1 -->
     <div id="ypanel1" class="year-panel">
       <div class="warn-box" style="margin-bottom:12px;">⚠️ 1년전 사업연도 — 가중치 ×3 (가장 중요)</div>
       <div class="field" style="max-width:300px;margin-bottom:14px;">
         <label>사업연도 (종료일)</label>
-        <input type="date" id="fy1_end" value="2025-03-31" oninput="calcAll()">
+        <input type="date" id="fy1_end" oninput="calcAll()">
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th style="min-width:260px;">항목</th><th style="min-width:160px;">금액 (원)</th><th>구분</th></tr></thead>
+          <thead><tr>
+            <th style="min-width:300px;">항목 (엑셀 법인세신고내용(입력))</th>
+            <th style="min-width:160px;">금액 (원)</th>
+            <th style="width:60px;">구분</th>
+          </tr></thead>
           <tbody>
-            <tr><td><strong>당기순이익</strong></td><td><input type="text" id="y1_ni" class="red-input" placeholder="직접입력" oninput="formatComma(this);calcAll()" value="148,729,009"></td><td class="num"><span class="err-badge">필수입력</span></td></tr>
-            <tr><td>각 사업연도 소득금액</td><td><input type="text" id="y1_income" class="red-input" placeholder="직접입력" oninput="formatComma(this);calcAll()"></td><td></td></tr>
-            <tr><td>법인세비용차감전순이익</td><td><input type="text" id="y1_preIncome" oninput="formatComma(this)" value="165,519,903"></td><td></td></tr>
-            <tr><td>법인세비용</td><td><input type="text" id="y1_taxExp" oninput="formatComma(this)" value="16,790,894"></td><td></td></tr>
-            <tr><td>✅ 익금산입계</td><td><input type="text" id="y1_addBack" oninput="formatComma(this)" placeholder="0"></td><td></td></tr>
-            <tr><td>✅ 손금산입계</td><td><input type="text" id="y1_deduct" oninput="formatComma(this)" placeholder="0"></td><td></td></tr>
-            <tr><td colspan="3" style="color:var(--text3);font-size:12px;padding:8px 12px;background:rgba(255,255,255,.02);">── 세무조정 개별 항목 ──</td></tr>
-            <tr><td>② 국세환급금이자 익금불산입</td><td><input type="text" id="y1_i02" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>③ 수입배당금 익금불산입</td><td><input type="text" id="y1_i03" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④ 기부금이월 손금산입</td><td><input type="text" id="y1_i04" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④-1 외화환산이익</td><td><input type="text" id="y1_i04a" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④-2 업무용승용차 손금산입액</td><td><input type="text" id="y1_i04b" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>⑤ 벌금·과태료</td><td><input type="text" id="y1_d05" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑥ 손금불산입 공과금</td><td><input type="text" id="y1_d06" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑦ 업무무관 지출</td><td><input type="text" id="y1_d07" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑧ 각 세법 징수불이행 납부세액</td><td><input type="text" id="y1_d08" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑨ 기부금 한도초과</td><td><input type="text" id="y1_d09" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑩ 접대비 한도초과</td><td><input type="text" id="y1_d10" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑪ 과다경비 손금불산입</td><td><input type="text" id="y1_d11" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑫ 지급이자 손금불산입(업무무관)</td><td><input type="text" id="y1_d12" class="red-input" oninput="formatComma(this);calcAll()" value="5,605,327"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑬ 감가상각비 시인부족액</td><td><input type="text" id="y1_d13" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑬-1 업무용승용차 손금불산입</td><td><input type="text" id="y1_d13a" class="red-input" oninput="formatComma(this);calcAll()" value="468,265"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑬-2 외화환산손실</td><td><input type="text" id="y1_d13b" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑭ 법인세 결정세액</td><td><input type="text" id="y1_d14" class="red-input" oninput="formatComma(this);calcAll()" value="28,500,992"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑭-1 외국납부세액</td><td><input type="text" id="y1_d14a" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑮ 농어촌특별세</td><td><input type="text" id="y1_d15" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑯ 지방소득세</td><td><input type="text" id="y1_d16" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>토지 양도소득 법인세</td><td><input type="text" id="y1_land_tax" oninput="formatComma(this)" value="0"></td><td><span class="num-cell" style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr style="background:rgba(79,142,247,.06)"><td><strong>사업연도말 주식(출자)수</strong></td><td><input type="text" id="y1_shares" class="red-input" oninput="formatComma(this);calcAll()" value="5,000"></td><td><span class="err-badge">필수입력</span></td></tr>
+            <tr style="background:rgba(79,142,247,.06)"><td><strong>당기순이익</strong></td>
+              <td><input type="text" id="y1_ni" class="red-input" oninput="formatComma(this);calcAll()" placeholder="필수입력"></td>
+              <td><span class="err-badge">필수</span></td></tr>
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(52,211,153,.05);color:var(--success);font-size:11px;font-weight:600;">▲ 익금산입 (가산항목 → 각사업연도소득에 더해짐)</td></tr>
+            <tr><td>퇴직급여충당금 한도초과</td>
+              <td><input type="text" id="y1_g01" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>퇴직연금등 손금산입액</td>
+              <td><input type="text" id="y1_g02" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>대손충당금 한도초과</td>
+              <td><input type="text" id="y1_g03" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>접대비 한도초과</td>
+              <td><input type="text" id="y1_g04" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>손금불산입 공과금</td>
+              <td><input type="text" id="y1_g05" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>벌과금·과태료</td>
+              <td><input type="text" id="y1_g06" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>가지급금 인정이자</td>
+              <td><input type="text" id="y1_g07" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>가지급금지급이자 (업무무관자산 지급이자)</td>
+              <td><input type="text" id="y1_g08" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>건물 감가상각비 한도초과액</td>
+              <td><input type="text" id="y1_g09" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>기계 감가상각비 한도초과액</td>
+              <td><input type="text" id="y1_g10" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>구축물 감가상각비 한도초과액</td>
+              <td><input type="text" id="y1_g11" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>외화환산이익</td>
+              <td><input type="text" id="y1_g12" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>업무용승용차 관련 손금불산입액</td>
+              <td><input type="text" id="y1_g13" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>비지정기부금</td>
+              <td><input type="text" id="y1_g14" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>전기오류수정손실</td>
+              <td><input type="text" id="y1_g15" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>기타 익금산입</td>
+              <td><input type="text" id="y1_g16" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr style="background:rgba(52,211,153,.08)"><td><strong>익금산입계</strong></td>
+              <td class="num"><span id="y1_gsum" style="color:var(--success)">0</span></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(124,95,230,.05);color:var(--accent2);font-size:11px;font-weight:600;">▼ 손금산입 (차감항목 → 각사업연도소득에서 빠짐)</td></tr>
+            <tr><td>수입배당금 익금불산입</td>
+              <td><input type="text" id="y1_s01" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>업무용승용차 관련 손금산입액</td>
+              <td><input type="text" id="y1_s02" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>외화환산손실</td>
+              <td><input type="text" id="y1_s03" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>기부금 한도초과이월 손금산입</td>
+              <td><input type="text" id="y1_s04" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>감가상각비 시인부족액 (상각부인액 추인)</td>
+              <td><input type="text" id="y1_s05" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>기타 손금산입</td>
+              <td><input type="text" id="y1_s06" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr style="background:rgba(124,95,230,.08)"><td><strong>손금산입계</strong></td>
+              <td class="num"><span id="y1_ssum" style="color:var(--accent2)">0</span></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(255,255,255,.02);color:var(--text3);font-size:11px;font-weight:600;">기부금 한도초과·이월 조정</td></tr>
+            <tr><td>기부금 한도초과액</td>
+              <td><input type="text" id="y1_don_over" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">가산</td></tr>
+            <tr><td>기부금 한도초과이월액 손금산입</td>
+              <td><input type="text" id="y1_don_carry" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">차감</td></tr>
+
+            <tr style="background:rgba(240,180,41,.08)"><td><strong>각 사업연도 소득금액 (자동계산)</strong></td>
+              <td class="num"><strong><span id="y1_income_calc" style="color:var(--gold)">0</span></strong></td>
+              <td><span class="ok-badge" style="font-size:10px;">자동</span></td></tr>
+            <tr><td style="color:var(--text3);font-size:12px;">직접입력(세무조정계산서 확인값 우선)</td>
+              <td><input type="text" id="y1_income" oninput="formatComma(this);calcAll()" placeholder="비워두면 자동계산"></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(248,113,113,.05);color:var(--danger);font-size:11px;font-weight:600;">▼ 순손익액 계산 — 각사업연도소득에서 차감</td></tr>
+            <tr><td>⑭ 법인세 결정세액 (이월결손금 공제 전)</td>
+              <td><input type="text" id="y1_d14" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>⑮ 농어촌특별세</td>
+              <td><input type="text" id="y1_d15" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>⑯ 지방소득세</td>
+              <td><input type="text" id="y1_d16" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>토지등 양도소득에 대한 법인세</td>
+              <td><input type="text" id="y1_land_tax" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+
+            <tr style="background:rgba(79,142,247,.06)"><td><strong>사업연도말 주식(출자)수</strong></td>
+              <td><input type="text" id="y1_shares" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td>
+              <td><span class="err-badge">필수</span></td></tr>
           </tbody>
         </table>
-      </div>
-    </div>
-
+      </div></div>
     <!-- Year 2 -->
     <div id="ypanel2" class="year-panel" style="display:none;">
       <div class="info-box" style="margin-bottom:12px;">2년전 사업연도 — 가중치 ×2</div>
       <div class="field" style="max-width:300px;margin-bottom:14px;">
         <label>사업연도 (종료일)</label>
-        <input type="date" id="fy2_end" value="2024-03-31" oninput="calcAll()">
+        <input type="date" id="fy2_end" oninput="calcAll()">
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th style="min-width:260px;">항목</th><th style="min-width:160px;">금액 (원)</th><th>구분</th></tr></thead>
+          <thead><tr>
+            <th style="min-width:300px;">항목 (엑셀 법인세신고내용(입력))</th>
+            <th style="min-width:160px;">금액 (원)</th>
+            <th style="width:60px;">구분</th>
+          </tr></thead>
           <tbody>
-            <tr><td><strong>당기순이익</strong></td><td><input type="text" id="y2_ni" class="red-input" oninput="formatComma(this);calcAll()" value="148,729,009"></td><td><span class="err-badge">필수입력</span></td></tr>
-            <tr><td>각 사업연도 소득금액</td><td><input type="text" id="y2_income" oninput="formatComma(this);calcAll()"></td><td></td></tr>
-            <tr><td>② 국세환급금이자 익금불산입</td><td><input type="text" id="y2_i02" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>③ 수입배당금 익금불산입</td><td><input type="text" id="y2_i03" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④ 기부금이월 손금산입</td><td><input type="text" id="y2_i04" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④-1 외화환산이익</td><td><input type="text" id="y2_i04a" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④-2 업무용승용차 손금산입액</td><td><input type="text" id="y2_i04b" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>⑤ 벌금·과태료</td><td><input type="text" id="y2_d05" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑥ 손금불산입 공과금</td><td><input type="text" id="y2_d06" oninput="formatComma(this)" value="786,100"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑨ 기부금 한도초과</td><td><input type="text" id="y2_d09" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑩ 접대비 한도초과</td><td><input type="text" id="y2_d10" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑫ 지급이자 손금불산입</td><td><input type="text" id="y2_d12" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑬-1 업무용승용차 손금불산입</td><td><input type="text" id="y2_d13a" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑬-2 외화환산손실</td><td><input type="text" id="y2_d13b" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑭ 법인세 결정세액</td><td><input type="text" id="y2_d14" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑮ 농어촌특별세</td><td><input type="text" id="y2_d15" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑯ 지방소득세</td><td><input type="text" id="y2_d16" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr style="background:rgba(79,142,247,.06)"><td><strong>사업연도말 주식(출자)수</strong></td><td><input type="text" id="y2_shares" class="red-input" oninput="formatComma(this);calcAll()" value="5,000"></td><td><span class="err-badge">필수</span></td></tr>
+            <tr style="background:rgba(79,142,247,.06)"><td><strong>당기순이익</strong></td>
+              <td><input type="text" id="y2_ni" class="red-input" oninput="formatComma(this);calcAll()" placeholder="필수입력"></td>
+              <td><span class="err-badge">필수</span></td></tr>
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(52,211,153,.05);color:var(--success);font-size:11px;font-weight:600;">▲ 익금산입 (가산항목 → 각사업연도소득에 더해짐)</td></tr>
+            <tr><td>퇴직급여충당금 한도초과</td>
+              <td><input type="text" id="y2_g01" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>퇴직연금등 손금산입액</td>
+              <td><input type="text" id="y2_g02" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>대손충당금 한도초과</td>
+              <td><input type="text" id="y2_g03" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>접대비 한도초과</td>
+              <td><input type="text" id="y2_g04" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>손금불산입 공과금</td>
+              <td><input type="text" id="y2_g05" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>벌과금·과태료</td>
+              <td><input type="text" id="y2_g06" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>가지급금 인정이자</td>
+              <td><input type="text" id="y2_g07" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>가지급금지급이자 (업무무관자산 지급이자)</td>
+              <td><input type="text" id="y2_g08" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>건물 감가상각비 한도초과액</td>
+              <td><input type="text" id="y2_g09" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>기계 감가상각비 한도초과액</td>
+              <td><input type="text" id="y2_g10" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>구축물 감가상각비 한도초과액</td>
+              <td><input type="text" id="y2_g11" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>외화환산이익</td>
+              <td><input type="text" id="y2_g12" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>업무용승용차 관련 손금불산입액</td>
+              <td><input type="text" id="y2_g13" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>비지정기부금</td>
+              <td><input type="text" id="y2_g14" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>전기오류수정손실</td>
+              <td><input type="text" id="y2_g15" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>기타 익금산입</td>
+              <td><input type="text" id="y2_g16" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr style="background:rgba(52,211,153,.08)"><td><strong>익금산입계</strong></td>
+              <td class="num"><span id="y2_gsum" style="color:var(--success)">0</span></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(124,95,230,.05);color:var(--accent2);font-size:11px;font-weight:600;">▼ 손금산입 (차감항목 → 각사업연도소득에서 빠짐)</td></tr>
+            <tr><td>수입배당금 익금불산입</td>
+              <td><input type="text" id="y2_s01" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>업무용승용차 관련 손금산입액</td>
+              <td><input type="text" id="y2_s02" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>외화환산손실</td>
+              <td><input type="text" id="y2_s03" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>기부금 한도초과이월 손금산입</td>
+              <td><input type="text" id="y2_s04" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>감가상각비 시인부족액 (상각부인액 추인)</td>
+              <td><input type="text" id="y2_s05" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>기타 손금산입</td>
+              <td><input type="text" id="y2_s06" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr style="background:rgba(124,95,230,.08)"><td><strong>손금산입계</strong></td>
+              <td class="num"><span id="y2_ssum" style="color:var(--accent2)">0</span></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(255,255,255,.02);color:var(--text3);font-size:11px;font-weight:600;">기부금 한도초과·이월 조정</td></tr>
+            <tr><td>기부금 한도초과액</td>
+              <td><input type="text" id="y2_don_over" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">가산</td></tr>
+            <tr><td>기부금 한도초과이월액 손금산입</td>
+              <td><input type="text" id="y2_don_carry" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">차감</td></tr>
+
+            <tr style="background:rgba(240,180,41,.08)"><td><strong>각 사업연도 소득금액 (자동계산)</strong></td>
+              <td class="num"><strong><span id="y2_income_calc" style="color:var(--gold)">0</span></strong></td>
+              <td><span class="ok-badge" style="font-size:10px;">자동</span></td></tr>
+            <tr><td style="color:var(--text3);font-size:12px;">직접입력(세무조정계산서 확인값 우선)</td>
+              <td><input type="text" id="y2_income" oninput="formatComma(this);calcAll()" placeholder="비워두면 자동계산"></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(248,113,113,.05);color:var(--danger);font-size:11px;font-weight:600;">▼ 순손익액 계산 — 각사업연도소득에서 차감</td></tr>
+            <tr><td>⑭ 법인세 결정세액 (이월결손금 공제 전)</td>
+              <td><input type="text" id="y2_d14" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>⑮ 농어촌특별세</td>
+              <td><input type="text" id="y2_d15" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>⑯ 지방소득세</td>
+              <td><input type="text" id="y2_d16" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>토지등 양도소득에 대한 법인세</td>
+              <td><input type="text" id="y2_land_tax" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+
+            <tr style="background:rgba(79,142,247,.06)"><td><strong>사업연도말 주식(출자)수</strong></td>
+              <td><input type="text" id="y2_shares" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td>
+              <td><span class="err-badge">필수</span></td></tr>
           </tbody>
         </table>
-      </div>
-    </div>
-
+      </div></div>
     <!-- Year 3 -->
     <div id="ypanel3" class="year-panel" style="display:none;">
       <div class="info-box" style="margin-bottom:12px;">3년전 사업연도 — 가중치 ×1</div>
       <div class="field" style="max-width:300px;margin-bottom:14px;">
         <label>사업연도 (종료일)</label>
-        <input type="date" id="fy3_end" value="2023-03-31" oninput="calcAll()">
+        <input type="date" id="fy3_end" oninput="calcAll()">
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th style="min-width:260px;">항목</th><th style="min-width:160px;">금액 (원)</th><th>구분</th></tr></thead>
+          <thead><tr>
+            <th style="min-width:300px;">항목 (엑셀 법인세신고내용(입력))</th>
+            <th style="min-width:160px;">금액 (원)</th>
+            <th style="width:60px;">구분</th>
+          </tr></thead>
           <tbody>
-            <tr><td><strong>당기순이익 (또는 각사업연도소득)</strong></td><td><input type="text" id="y3_ni" class="red-input" oninput="formatComma(this);calcAll()"></td><td><span class="err-badge">필수입력</span></td></tr>
-            <tr><td>각 사업연도 소득금액</td><td><input type="text" id="y3_income" oninput="formatComma(this);calcAll()" value="318,545,718"></td><td></td></tr>
-            <tr><td>② 국세환급금이자 익금불산입</td><td><input type="text" id="y3_i02" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>③ 수입배당금 익금불산입</td><td><input type="text" id="y3_i03" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④ 기부금이월 손금산입</td><td><input type="text" id="y3_i04" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④-1 외화환산이익</td><td><input type="text" id="y3_i04a" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>④-2 업무용승용차 손금산입액</td><td><input type="text" id="y3_i04b" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--success);font-size:11px;">가산</span></td></tr>
-            <tr><td>⑤ 벌금·과태료</td><td><input type="text" id="y3_d05" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑥ 손금불산입 공과금</td><td><input type="text" id="y3_d06" oninput="formatComma(this)" value="786,100"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑨ 기부금 한도초과</td><td><input type="text" id="y3_d09" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑩ 접대비 한도초과</td><td><input type="text" id="y3_d10" class="red-input" oninput="formatComma(this);calcAll()" value="240,000"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑫ 지급이자 손금불산입</td><td><input type="text" id="y3_d12" class="red-input" oninput="formatComma(this);calcAll()" value="5,605,327"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑬-1 업무용승용차 손금불산입</td><td><input type="text" id="y3_d13a" class="red-input" oninput="formatComma(this);calcAll()" value="468,265"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑬-2 외화환산손실</td><td><input type="text" id="y3_d13b" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑭ 법인세 결정세액</td><td><input type="text" id="y3_d14" class="red-input" oninput="formatComma(this);calcAll()" value="28,500,992"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑮ 농어촌특별세</td><td><input type="text" id="y3_d15" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr><td>⑯ 지방소득세</td><td><input type="text" id="y3_d16" oninput="formatComma(this)" value="0"></td><td><span style="color:var(--danger);font-size:11px;">공제</span></td></tr>
-            <tr style="background:rgba(79,142,247,.06)"><td><strong>사업연도말 주식(출자)수</strong></td><td><input type="text" id="y3_shares" class="red-input" oninput="formatComma(this);calcAll()" value="5,000"></td><td><span class="err-badge">필수</span></td></tr>
+            <tr style="background:rgba(79,142,247,.06)"><td><strong>당기순이익</strong></td>
+              <td><input type="text" id="y3_ni" class="red-input" oninput="formatComma(this);calcAll()" placeholder="필수입력"></td>
+              <td><span class="err-badge">필수</span></td></tr>
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(52,211,153,.05);color:var(--success);font-size:11px;font-weight:600;">▲ 익금산입 (가산항목 → 각사업연도소득에 더해짐)</td></tr>
+            <tr><td>퇴직급여충당금 한도초과</td>
+              <td><input type="text" id="y3_g01" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>퇴직연금등 손금산입액</td>
+              <td><input type="text" id="y3_g02" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>대손충당금 한도초과</td>
+              <td><input type="text" id="y3_g03" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>접대비 한도초과</td>
+              <td><input type="text" id="y3_g04" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>손금불산입 공과금</td>
+              <td><input type="text" id="y3_g05" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>벌과금·과태료</td>
+              <td><input type="text" id="y3_g06" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>가지급금 인정이자</td>
+              <td><input type="text" id="y3_g07" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>가지급금지급이자 (업무무관자산 지급이자)</td>
+              <td><input type="text" id="y3_g08" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>건물 감가상각비 한도초과액</td>
+              <td><input type="text" id="y3_g09" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>기계 감가상각비 한도초과액</td>
+              <td><input type="text" id="y3_g10" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>구축물 감가상각비 한도초과액</td>
+              <td><input type="text" id="y3_g11" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>외화환산이익</td>
+              <td><input type="text" id="y3_g12" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>업무용승용차 관련 손금불산입액</td>
+              <td><input type="text" id="y3_g13" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>비지정기부금</td>
+              <td><input type="text" id="y3_g14" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>전기오류수정손실</td>
+              <td><input type="text" id="y3_g15" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr><td>기타 익금산입</td>
+              <td><input type="text" id="y3_g16" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">익금산입</td></tr>
+            <tr style="background:rgba(52,211,153,.08)"><td><strong>익금산입계</strong></td>
+              <td class="num"><span id="y3_gsum" style="color:var(--success)">0</span></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(124,95,230,.05);color:var(--accent2);font-size:11px;font-weight:600;">▼ 손금산입 (차감항목 → 각사업연도소득에서 빠짐)</td></tr>
+            <tr><td>수입배당금 익금불산입</td>
+              <td><input type="text" id="y3_s01" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>업무용승용차 관련 손금산입액</td>
+              <td><input type="text" id="y3_s02" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>외화환산손실</td>
+              <td><input type="text" id="y3_s03" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>기부금 한도초과이월 손금산입</td>
+              <td><input type="text" id="y3_s04" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>감가상각비 시인부족액 (상각부인액 추인)</td>
+              <td><input type="text" id="y3_s05" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr><td>기타 손금산입</td>
+              <td><input type="text" id="y3_s06" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--accent2);font-size:11px;">손금산입</td></tr>
+            <tr style="background:rgba(124,95,230,.08)"><td><strong>손금산입계</strong></td>
+              <td class="num"><span id="y3_ssum" style="color:var(--accent2)">0</span></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(255,255,255,.02);color:var(--text3);font-size:11px;font-weight:600;">기부금 한도초과·이월 조정</td></tr>
+            <tr><td>기부금 한도초과액</td>
+              <td><input type="text" id="y3_don_over" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">가산</td></tr>
+            <tr><td>기부금 한도초과이월액 손금산입</td>
+              <td><input type="text" id="y3_don_carry" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--success);font-size:11px;">차감</td></tr>
+
+            <tr style="background:rgba(240,180,41,.08)"><td><strong>각 사업연도 소득금액 (자동계산)</strong></td>
+              <td class="num"><strong><span id="y3_income_calc" style="color:var(--gold)">0</span></strong></td>
+              <td><span class="ok-badge" style="font-size:10px;">자동</span></td></tr>
+            <tr><td style="color:var(--text3);font-size:12px;">직접입력(세무조정계산서 확인값 우선)</td>
+              <td><input type="text" id="y3_income" oninput="formatComma(this);calcAll()" placeholder="비워두면 자동계산"></td><td></td></tr>
+
+            <tr><td colspan="3" style="padding:6px 12px;background:rgba(248,113,113,.05);color:var(--danger);font-size:11px;font-weight:600;">▼ 순손익액 계산 — 각사업연도소득에서 차감</td></tr>
+            <tr><td>⑭ 법인세 결정세액 (이월결손금 공제 전)</td>
+              <td><input type="text" id="y3_d14" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>⑮ 농어촌특별세</td>
+              <td><input type="text" id="y3_d15" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>⑯ 지방소득세</td>
+              <td><input type="text" id="y3_d16" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+            <tr><td>토지등 양도소득에 대한 법인세</td>
+              <td><input type="text" id="y3_land_tax" oninput="formatComma(this);calcAll()" value="0"></td><td style="color:var(--danger);font-size:11px;">공제</td></tr>
+
+            <tr style="background:rgba(79,142,247,.06)"><td><strong>사업연도말 주식(출자)수</strong></td>
+              <td><input type="text" id="y3_shares" class="red-input" oninput="formatComma(this);calcAll()" value="0"></td>
+              <td><span class="err-badge">필수</span></td></tr>
           </tbody>
         </table>
-      </div>
-    </div>
+      </div></div>
     <button class="btn-calc" onclick="calcAll();showTab('t02')">순손익액 자동계산 → 다음 탭으로 ▶</button>
   </div>
 </div>
@@ -466,40 +648,89 @@ td select.red-select{border:1px solid rgba(248,113,113,.6);}
      TAB 03: 토지와 건물
      ========================================== -->
 <div id="t03" class="tab-panel">
+
+  <!-- 저당권 특례 입력 (엑셀 C2/E2/E3) -->
+  <div class="section">
+    <div class="section-title">🔒 저당권 특례 입력 (엑셀 C2/E2/E3)</div>
+    <div class="info-box">저당권 등이 설정된 재산: Max(보충적 평가액, 담보 채권액)로 평가. 저당권이 없으면 비워 두세요.</div>
+    <div class="grid3">
+      <div class="field">
+        <label>근저당설정액 1 (C3)</label>
+        <input type="text" id="pledge_c3" oninput="formatComma(this);calcLand()" value="0">
+      </div>
+      <div class="field">
+        <label>근저당설정액 2 (C4)</label>
+        <input type="text" id="pledge_c4" oninput="formatComma(this);calcLand()" value="0">
+      </div>
+      <div class="field">
+        <label>근저당설정액 합계 C2 = C3+C4</label>
+        <input type="text" id="pledge_c2" value="0" readonly style="color:var(--text3);">
+      </div>
+      <div class="field">
+        <label>채무액 E2 <span class="err-badge" style="font-size:10px;">직접입력</span></label>
+        <input type="text" id="pledge_e2" class="red-input" oninput="formatComma(this);calcLand()" value="0">
+        <span class="hint">실제 남아있는 채권액(담보채무액)</span>
+      </div>
+      <div class="field">
+        <label>Min(근저당설정액, 채무액) E3</label>
+        <input type="text" id="pledge_e3" value="0" readonly style="color:var(--gold);">
+        <span class="hint">= MIN(C2, E2) — 저당권 안분계산 기준</span>
+      </div>
+      <div class="scard" style="align-self:end;">
+        <div class="scard-label">저당권 특례 적용 여부</div>
+        <div class="scard-val blue" id="pledge_apply" style="font-size:14px;">미적용</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 토지 평가 -->
   <div class="section">
     <div class="section-title">🏗️ 토지 평가</div>
-    <div class="info-box">상증법상 평가액 = Max(세무상 장부가액, 기준시가) → 저당권 특례 적용 여부 확인</div>
-    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
-      <button class="btn-add" onclick="addLandRow()">+ 토지 추가</button>
+    <div class="info-box">
+      <strong>H열(세무상 장부가액)</strong> = 취득가액 − 감가상각누계 + 유보금액 &nbsp;|&nbsp;
+      <strong>J열</strong> = MAX(H, 기준시가) &nbsp;|&nbsp;
+      <strong>K열(저당권안분)</strong> = E3 × J / Σ모든J &nbsp;|&nbsp;
+      <strong>L열(최종)</strong> = MAX(H, 기준시가, K)
     </div>
+    <div style="margin-bottom:10px;"><button class="btn-add" onclick="addLandRow()">+ 토지 추가</button></div>
     <div class="table-wrap">
       <table id="landTable">
         <thead>
           <tr>
             <th>구분</th><th>소재지</th><th>면적(㎡)</th>
-            <th>취득가액</th><th>감가상각누계</th><th>유보금액</th>
-            <th>세무상장부가</th><th>기준시가(공시지가)</th>
-            <th>저당채권액</th><th>상증법평가액</th><th>삭제</th>
+            <th>취득가액(E)</th><th>감가상각누계(F)</th><th>유보금액(G)</th>
+            <th>세무상장부가<br>H=E-F+G</th>
+            <th>기준시가<br>(공시지가I)</th>
+            <th>Max(H,I)<br>J열</th>
+            <th>저당권안분<br>K=E3×J/ΣJ</th>
+            <th>시가(M)</th>
+            <th>최종평가액<br>L=MAX(H,I,K)</th>
+            <th>삭제</th>
           </tr>
         </thead>
         <tbody id="landBody">
           <tr>
-            <td><input type="text" value="토지1" style="width:70px;"></td>
-            <td><input type="text" value="" style="min-width:140px;" placeholder="소재지 입력"></td>
-            <td><input type="text" oninput="formatComma(this)" value="0" style="width:90px;"></td>
-            <td><input type="text" class="red-input" id="land0_acq" oninput="formatComma(this);calcLand()" value="500,000,000"></td>
-            <td><input type="text" id="land0_depr" oninput="formatComma(this);calcLand()" value="0"></td>
-            <td><input type="text" id="land0_yebo" oninput="formatComma(this);calcLand()" value="0"></td>
-            <td class="num"><span id="land0_book">—</span></td>
-            <td><input type="text" class="red-input" id="land0_pv" oninput="formatComma(this);calcLand()" value="0"></td>
-            <td><input type="text" id="land0_pledge" oninput="formatComma(this);calcLand()" value="0"></td>
-            <td class="num" style="color:var(--gold);"><strong><span id="land0_eval">—</span></strong></td>
-            <td><button class="btn-del" onclick="delRow(this,'landBody')">✕</button></td>
+            <td><input type="text" value="토지1" style="width:60px;"></td>
+            <td><input type="text" value="" style="min-width:120px;" placeholder="소재지"></td>
+            <td><input type="text" oninput="formatComma(this)" value="0" style="width:80px;"></td>
+            <td><input type="text" class="red-input" oninput="formatComma(this);calcLand()" value="0" placeholder="취득가액"></td>
+            <td><input type="text" oninput="formatComma(this);calcLand()" value="0" placeholder="감가누계"></td>
+            <td><input type="text" oninput="formatComma(this);calcLand()" value="0" placeholder="유보금액"></td>
+            <td class="num" style="color:var(--accent);"><span class="land_book">—</span></td>
+            <td><input type="text" class="red-input" oninput="formatComma(this);calcLand()" value="0" placeholder="기준시가"></td>
+            <td class="num"><span class="land_j">—</span></td>
+            <td class="num" style="color:var(--warn);"><span class="land_k">—</span></td>
+            <td><input type="text" oninput="formatComma(this);calcLand()" value="0" placeholder="시가(없으면0)"></td>
+            <td class="num" style="color:var(--gold);font-weight:700;"><span class="land_l">—</span></td>
+            <td><button class="btn-del" onclick="delRow(this,'landBody');calcLand()">✕</button></td>
           </tr>
         </tbody>
         <tfoot>
           <tr style="background:rgba(79,142,247,.06);">
-            <td colspan="9"><strong>토지 합계 (상증법상)</strong></td>
+            <td colspan="8"><strong>토지 소계</strong></td>
+            <td class="num"><strong><span id="landTotalJ">—</span></strong></td>
+            <td class="num" style="color:var(--warn);"><strong><span id="landTotalK">—</span></strong></td>
+            <td></td>
             <td class="num" style="color:var(--gold);"><strong><span id="landTotal">—</span></strong></td>
             <td></td>
           </tr>
@@ -508,38 +739,43 @@ td select.red-select{border:1px solid rgba(248,113,113,.6);}
     </div>
   </div>
 
+  <!-- 건물 평가 -->
   <div class="section">
     <div class="section-title">🏢 건물 평가</div>
-    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
-      <button class="btn-add" onclick="addBuildingRow()">+ 건물 추가</button>
-    </div>
+    <div class="info-box">건물 세무상 장부가액 = 취득가액 − 감가상각누계 + 유보금액. 기준시가가 있는 경우 MAX(장부가, 기준시가) 적용.</div>
+    <div style="margin-bottom:10px;"><button class="btn-add" onclick="addBuildingRow()">+ 건물 추가</button></div>
     <div class="table-wrap">
       <table id="buildingTable">
         <thead>
           <tr>
             <th>구분</th><th>소재지</th>
-            <th>취득가액</th><th>감가상각누계</th><th>유보금액</th>
-            <th>세무상장부가</th><th>기준시가</th>
-            <th>저당채권액</th><th>상증법평가액</th><th>삭제</th>
+            <th>취득가액(E)</th><th>감가상각누계(F)</th><th>유보금액(G)</th>
+            <th>세무상장부가<br>H=E-F+G</th>
+            <th>기준시가(I)</th>
+            <th>평가액<br>MAX(H,I)</th>
+            <th>담보채권액(K)</th>
+            <th>최종평가액<br>MAX(H,I,K)</th>
+            <th>삭제</th>
           </tr>
         </thead>
         <tbody id="buildingBody">
           <tr>
-            <td><input type="text" value="건물1" style="width:70px;"></td>
-            <td><input type="text" style="min-width:140px;" placeholder="소재지 입력"></td>
-            <td><input type="text" class="red-input" id="bld0_acq" oninput="formatComma(this);calcBuilding()" value="0"></td>
-            <td><input type="text" id="bld0_depr" oninput="formatComma(this);calcBuilding()" value="0"></td>
-            <td><input type="text" id="bld0_yebo" oninput="formatComma(this);calcBuilding()" value="0"></td>
-            <td class="num"><span id="bld0_book">—</span></td>
-            <td><input type="text" class="red-input" id="bld0_pv" oninput="formatComma(this);calcBuilding()" value="0"></td>
-            <td><input type="text" id="bld0_pledge" oninput="formatComma(this);calcBuilding()" value="0"></td>
-            <td class="num" style="color:var(--gold);"><strong><span id="bld0_eval">—</span></strong></td>
-            <td><button class="btn-del" onclick="delRow(this,'buildingBody')">✕</button></td>
+            <td><input type="text" value="건물1" style="width:60px;"></td>
+            <td><input type="text" style="min-width:120px;" placeholder="소재지"></td>
+            <td><input type="text" class="red-input" oninput="formatComma(this);calcBuilding()" value="0" placeholder="취득가액"></td>
+            <td><input type="text" oninput="formatComma(this);calcBuilding()" value="0" placeholder="감가누계"></td>
+            <td><input type="text" oninput="formatComma(this);calcBuilding()" value="0" placeholder="유보금액"></td>
+            <td class="num" style="color:var(--accent);"><span class="bld_book">—</span></td>
+            <td><input type="text" class="red-input" oninput="formatComma(this);calcBuilding()" value="0" placeholder="기준시가"></td>
+            <td class="num"><span class="bld_j">—</span></td>
+            <td><input type="text" oninput="formatComma(this);calcBuilding()" value="0" placeholder="담보채권액"></td>
+            <td class="num" style="color:var(--gold);font-weight:700;"><span class="bld_l">—</span></td>
+            <td><button class="btn-del" onclick="delRow(this,'buildingBody');calcBuilding()">✕</button></td>
           </tr>
         </tbody>
         <tfoot>
           <tr style="background:rgba(79,142,247,.06);">
-            <td colspan="8"><strong>건물 합계 (상증법상)</strong></td>
+            <td colspan="9"><strong>건물 소계</strong></td>
             <td class="num" style="color:var(--gold);"><strong><span id="buildingTotal">—</span></strong></td>
             <td></td>
           </tr>
@@ -547,7 +783,7 @@ td select.red-select{border:1px solid rgba(248,113,113,.6);}
       </table>
     </div>
     <div style="margin-top:14px;padding:14px;background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.2);border-radius:8px;">
-      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">임대용 부동산 보정 (해당시)</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">임대용 부동산 (해당시)</div>
       <div class="grid3">
         <div class="field"><label>임대보증금(원)</label><input type="text" id="rentDeposit" oninput="formatComma(this)" value="0"></div>
         <div class="field"><label>월임대료(원)</label><input type="text" id="rentMonthly" oninput="formatComma(this)" value="0"></div>
@@ -555,8 +791,9 @@ td select.red-select{border:1px solid rgba(248,113,113,.6);}
       </div>
     </div>
     <div class="scard gold" style="margin-top:16px;">
-      <div class="scard-label">토지+건물 합계 (상증법상 평가)</div>
+      <div class="scard-label">토지 + 건물 합계 (상증법상 최종 평가액)</div>
       <div class="scard-val"><span id="landBuildTotal">—</span> 원</div>
+      <div class="scard-sub">토지 <span id="lb_land">—</span>원 + 건물 <span id="lb_building">—</span>원</div>
     </div>
   </div>
 </div>
@@ -1057,49 +1294,52 @@ td select.red-select{border:1px solid rgba(248,113,113,.6);}
      ========================================== -->
 <div id="t08" class="tab-panel">
   <div class="section">
-    <div class="section-title">📊 평가차액명세서 (입력)</div>
-    <div class="info-box">토지·건물·기계·차량 탭에서 자동 반영됩니다. 빨간색 항목 추가 입력 필요.</div>
-    <div class="table-wrap">
-      <table class="out-table">
-        <thead>
-          <tr>
-            <th colspan="2">자산 항목</th>
-            <th>상증법 평가액</th><th>재무상태표 금액</th><th>차액</th>
-            <th colspan="2">부채 항목</th>
-            <th>상증법 평가액</th><th>재무상태표 금액</th><th>차액</th>
-          </tr>
-        </thead>
-        <tbody id="evalDiffBody">
-          <!-- JS로 자동 생성 -->
-        </tbody>
-        <tfoot>
-          <tr style="background:rgba(79,142,247,.08);">
-            <td colspan="2"><strong>자산 합계</strong></td>
-            <td class="num" style="color:var(--gold);"><strong><span id="edAssetEval">—</span></strong></td>
-            <td class="num"><strong><span id="edAssetBook">—</span></strong></td>
-            <td class="num" style="color:var(--success);"><strong><span id="edAssetDiff">—</span></strong></td>
-            <td colspan="2"><strong>부채 합계</strong></td>
-            <td class="num" style="color:var(--danger);"><strong><span id="edLiabEval">—</span></strong></td>
-            <td class="num"><strong><span id="edLiabBook">—</span></strong></td>
-            <td class="num"><strong><span id="edLiabDiff">—</span></strong></td>
-          </tr>
-          <tr style="background:rgba(240,180,41,.08);">
-            <td colspan="4"><strong>평가차액 합계 (자산차액 - 부채차액)</strong></td>
-            <td colspan="6" class="num" style="color:var(--gold);font-size:16px;"><strong><span id="totalEvalDiff">—</span></strong></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+    <div class="section-title">📊 평가차액명세서 (입력) [엑셀 평가차액명세서(입력) 탭 기준]</div>
+    <div class="info-box">재무상태표(입력) 탭의 값을 기반으로 자동계산됩니다. 상증법 평가액이 재무상태표와 다른 항목(토지·건물·차량·회원권 등)만 차액이 발생합니다. 퇴직급여·확정배당·손익미계상세액 등 부채 조정항목을 추가 입력하세요.</div>
+    <button class="btn-small" onclick="buildEvalDiffTable()" style="margin-bottom:12px;">🔄 평가차액 자동생성</button>
+    <div id="evalDiffTableArea"></div>
+  </div>
 
-    <div class="divider"></div>
-    <div class="section-title">🔧 추가 평가차액 항목 (직접 입력)</div>
+  <div class="section">
+    <div class="section-title">🔧 부채 조정항목 추가 입력</div>
     <div class="grid3">
-      <div class="field"><label>단기매매증권 평가차액</label><input type="text" id="ed_trading_diff" oninput="formatComma(this);calcEvalDiff()" value="0"></div>
-      <div class="field"><label>회원권 평가차액</label><input type="text" id="ed_membership_diff" class="red-input" oninput="formatComma(this);calcEvalDiff()" value="0"></div>
-      <div class="field"><label>퇴직급여충당금 평가조정</label><input type="text" id="ed_retire_diff" class="red-input" oninput="formatComma(this);calcEvalDiff()" value="0"></div>
-      <div class="field"><label>퇴직급여 추계액 (부채가산)</label><input type="text" id="ed_retireEst" class="red-input" oninput="formatComma(this);calcAll()" value="0"></div>
-      <div class="field"><label>확정배당금 미계상 (부채가산)</label><input type="text" id="ed_divAccrual" class="red-input" oninput="formatComma(this);calcAll()" value="0"></div>
-      <div class="field"><label>손익미계상 법인세 (부채가산)</label><input type="text" id="ed_unbookTax" oninput="formatComma(this);calcAll()" value="0"></div>
+      <div class="field">
+        <label>퇴직급여추계액 (부채 가산)</label>
+        <input type="text" id="ed_retireEst" class="red-input" oninput="formatComma(this);calcAll()" value="0">
+        <span class="hint">퇴직급여충당부채 > 회계상 장부가일 때 차액</span>
+      </div>
+      <div class="field">
+        <label>확정배당금 미계상액·상여금 (부채 가산)</label>
+        <input type="text" id="ed_divAccrual" class="red-input" oninput="formatComma(this);calcAll()" value="0">
+      </div>
+      <div class="field">
+        <label>1. 법인세 손익미계상액 (부채 가산)</label>
+        <input type="text" id="ed_unbookTax" oninput="formatComma(this);calcAll()" value="0">
+      </div>
+      <div class="field">
+        <label>2. 농어촌특별세 손익미계상액</label>
+        <input type="text" id="ed_unbookRural" oninput="formatComma(this);calcAll()" value="0">
+      </div>
+      <div class="field">
+        <label>3. 지방소득세 손익미계상액</label>
+        <input type="text" id="ed_unbookLocal" oninput="formatComma(this);calcAll()" value="0">
+      </div>
+      <div class="field">
+        <label>기타 부채 가산/차감</label>
+        <input type="text" id="ed_otherLiab" oninput="formatComma(this);calcAll()" value="0">
+        <span class="hint">양수=가산, 음수=차감</span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid2">
+      <div class="scard">
+        <div class="scard-label">자산 평가차액 합계 (①)</div>
+        <div class="scard-val blue"><span id="ed_assetDiffTotal">—</span> 원</div>
+      </div>
+      <div class="scard red">
+        <div class="scard-label">부채 조정 합계 (②)</div>
+        <div class="scard-val"><span id="ed_liabAdjTotal">—</span> 원</div>
+      </div>
     </div>
   </div>
 </div>
@@ -1114,7 +1354,7 @@ td select.red-select{border:1px solid rgba(248,113,113,.6);}
       <button class="btn-small" onclick="renderEvalDiffOut()">🔄 출력 새로고침</button>
       <span id="evalDiffCheck"></span>
     </div>
-    <div id="evalDiffOutput"><div class="info-box">평가차액명세서(입력) 탭 데이터 입력 후 자동 출력됩니다.</div></div>
+    <div id="evalDiffOutput"><div class="info-box">평가차액명세서(입력) 탭에서 '자동생성' 후 이 탭을 열면 자동 출력됩니다.</div></div>
   </div>
 </div>
 
@@ -1421,29 +1661,375 @@ function setEvalDate(){
 // TAX INCOME CALCULATION
 // ============================================================
 function getYearData(y){
-  // Get all items for year y
-  const income=parseComma(`y${y}_income`)||parseComma(`y${y}_ni`);
-  const i02=parseComma(`y${y}_i02`),i03=parseComma(`y${y}_i03`),i04=parseComma(`y${y}_i04`);
-  const i04a=parseComma(`y${y}_i04a`),i04b=parseComma(`y${y}_i04b`);
-  const d05=parseComma(`y${y}_d05`),d06=parseComma(`y${y}_d06`),d07=parseComma(`y${y}_d07`);
-  const d08=parseComma(`y${y}_d08`),d09=parseComma(`y${y}_d09`),d10=parseComma(`y${y}_d10`);
-  const d11=parseComma(`y${y}_d11`),d12=parseComma(`y${y}_d12`),d13=parseComma(`y${y}_d13`);
-  const d13a=parseComma(`y${y}_d13a`),d13b=parseComma(`y${y}_d13b`);
-  const d14=parseComma(`c_y${y}_d14`)||parseComma(`y${y}_d14`);
-  const d14a=parseComma(`y${y}_d14a`);
-  const d15=parseComma(`c_y${y}_d15`)||parseComma(`y${y}_d15`);
-  const d16=parseComma(`c_y${y}_d16`)||parseComma(`y${y}_d16`);
-  const landTax=parseComma(`y${y}_land_tax`)||0;
-  const unbookTax=parseComma(`y${y}_unbook_tax`)||0;
-  const shares=parseComma(`y${y}_shares`)||parseComma('totalShares')||1;
+  // 익금산입 합계
+  var gids=['g01','g02','g03','g04','g05','g06','g07','g08','g09','g10','g11','g12','g13','g14','g15','g16'];
+  var gsum=0;
+  gids.forEach(function(id){ gsum+=parseComma('y'+y+'_'+id)||0; });
 
-  const addTotal=i02+i03+i04+i04a+i04b;
-  const subTotal=d05+d06+d07+d08+d09+d10+d11+d12+d13+d13a+d13b+d14+d14a+d15+d16+landTax;
+  // 손금산입 합계
+  var sids=['s01','s02','s03','s04','s05','s06'];
+  var ssum=0;
+  sids.forEach(function(id){ ssum+=parseComma('y'+y+'_'+id)||0; });
 
-  const netIncome=income+addTotal-subTotal;
-  const eps=shares>0?netIncome/shares:0;
+  // 기부금 조정
+  var donOver=parseComma('y'+y+'_don_over')||0;
+  var donCarry=parseComma('y'+y+'_don_carry')||0;
 
-  return{income,addTotal,subTotal,netIncome,eps,shares,d14,d15,d16};
+  // 각사업연도소득 = 당기순이익 + 익금산입계 - 손금산입계 + 기부금한도초과 - 기부금이월손금산입
+  var ni=parseComma('y'+y+'_ni')||0;
+  var incomeCalc=ni+gsum-ssum+donOver-donCarry;
+
+  // 직접입력 우선
+  var incomeManual=parseComma('y'+y+'_income')||0;
+  var income=incomeManual!==0?incomeManual:incomeCalc;
+
+  // 화면 자동계산값 표시
+  var gcEl=document.getElementById('y'+y+'_income_calc');
+  if(gcEl) gcEl.textContent=fmtN(incomeCalc);
+  var gsEl=document.getElementById('y'+y+'_gsum');
+  if(gsEl) gsEl.textContent=fmtN(gsum);
+  var ssEl=document.getElementById('y'+y+'_ssum');
+  if(ssEl) ssEl.textContent=fmtN(ssum);
+
+  // 순손익액 = 각사업연도소득 - 법인세 - 농특세 - 지방소득세 - 토지양도법인세
+  var d14=parseComma('c_y'+y+'_d14')||parseComma('y'+y+'_d14')||0;
+  var d15=parseComma('c_y'+y+'_d15')||parseComma('y'+y+'_d15')||0;
+  var d16=parseComma('c_y'+y+'_d16')||parseComma('y'+y+'_d16')||0;
+  var landTax=parseComma('y'+y+'_land_tax')||0;
+  var subTotal=d14+d15+d16+landTax;
+  var netIncome=income-subTotal;
+  var shares=parseComma('y'+y+'_shares')||parseComma('totalShares')||1;
+  var eps=shares>0?netIncome/shares:0;
+
+  return{income:income,incomeCalc:incomeCalc,gsum:gsum,ssum:ssum,
+         subTotal:subTotal,netIncome:netIncome,eps:eps,shares:shares,
+         d14:d14,d15:d15,d16:d16};
+}
+
+
+// ============================================================
+// EVAL DIFF TABLE BUILD — 평가차액명세서(입력) 전체 계정 자동생성
+// 엑셀 평가차액명세서(입력) 탭 기준 (행4~행53)
+// ============================================================
+function buildEvalDiffTable(){
+  window._membershipEval = window._membershipEval || readBsVal('a_membership');
+
+  // ── 자산 목록 (엑셀 평가차액명세서(입력) 행4-53 순서)
+  var ASSETS=[
+    {nm:'현금및현금성자산',      id:'a_cash'},
+    {nm:'단기금융상품',          id:'a_stDeposit'},
+    {nm:'단기매매증권',          id:'a_trading',     win:'_secEval'},
+    {nm:'외상매출금',            id:'a_ar'},
+    {nm:'단기대여금',            id:'a_stLoan'},
+    {nm:'미수수익',              id:'a_accrued'},
+    {nm:'미수금',                id:'a_other_ar'},
+    {nm:'선급금',                id:'a_prepaid'},
+    {nm:'선급비용',              id:'a_prepaidExp'},
+    {nm:'선급법인세/부가세대급금',id:'a_preTax'},
+    {nm:'이연법인세자산',        id:'a_deferTax'},
+    {nm:'재고자산(제품)',        id:'a_goods'},
+    {nm:'원재료',                id:'a_rawmat'},
+    {nm:'장기금융상품',          id:'a_ltDeposit'},
+    {nm:'매도가능증권',          id:'a_mav'},
+    {nm:'지분법적용투자주식',    id:'a_equity'},
+    {nm:'장기대여금',            id:'a_ltLoan'},
+    {nm:'상해보험예치금',        id:'a_insurance'},
+    {nm:'보증금',                id:'a_deposit'},
+    {nm:'토지',                  id:'a_land_book',   win:'_landEval'},
+    {nm:'건물',                  id:'a_building_book',win:'_buildingEval'},
+    {nm:'구축물',                id:'a_struct_book', win:'_otherEval'},
+    {nm:'기계장치',              id:'a_mach_book',   win:'_machEval'},
+    {nm:'차량운반구',            id:'a_vehicle_book',win:'_vehicleEval'},
+    {nm:'비품',                  id:'a_equip_book'},
+    {nm:'시설장치',              id:'a_fac_book'},
+    {nm:'건설중인자산',          id:'a_constInProg'},
+    {nm:'개발비',                id:'a_devCost'},
+    {nm:'산업재산권·무형자산',   id:'a_intangible'},
+    {nm:'회원권',                id:'a_membership',  win:'_membershipEval'},
+    {nm:'장기외상매출금',        id:null, v:0},
+    {nm:'퇴직보험예치금',        id:null, v:0},
+    {nm:'무체재산권',            id:null, v:0},
+  ];
+
+  // ── 부채 목록
+  var LIABS=[
+    {nm:'매입채무',              id:'l_ap'},
+    {nm:'미지급금',              id:'l_accruedL'},
+    {nm:'예수금',                id:'l_deposit'},
+    {nm:'선수금',                id:'l_advance'},
+    {nm:'단기차입금',            id:'l_stBorrow'},
+    {nm:'당기법인세부채/미지급법인세', id:'l_taxPay'},
+    {nm:'미지급비용',            id:'l_accruedExp'},
+    {nm:'유동성장기부채',        id:'l_currLT'},
+    {nm:'하자보수충당금',        id:null, v:0},
+    {nm:'미지급배당금',          id:'l_divPay'},
+    {nm:'장기차입금',            id:'l_ltBorrow'},
+    {nm:'퇴직급여충당부채',      id:'l_retire',  retire:true},
+    {nm:'외화장기차입금',        id:'l_fxBorrow'},
+    {nm:'전환사채',              id:'l_convertBond'},
+    {nm:'영업보증금',            id:'l_bizGuarantee'},
+    {nm:'이연법인세부채',        id:'l_deferTaxL'},
+    {nm:'연구및인력개발준비금',  id:null, v:0},
+  ];
+
+  var retireAdj = readBsVal('l_retireFund');
+  var aEvalSum=0, aBookSum=0, aDiffSum=0;
+  var lEvalSum=0, lBookSum=0, lDiffSum=0;
+
+  // 자산 rows 생성
+  var aRows='';
+  ASSETS.forEach(function(item){
+    var book = item.id ? getBookVal(item.id) : (item.v||0);
+    // getBookVal이 0 이고 span이 아닌 input인 경우 readBsVal로 재시도
+    if(book===0 && item.id){
+      var el=document.getElementById(item.id);
+      if(el && el.tagName==='INPUT') book=parseComma(item.id)||0;
+    }
+    var evalAmt = item.win ? (window[item.win]||book) : book;
+    var diff = evalAmt - book;
+    aEvalSum+=evalAmt; aBookSum+=book; aDiffSum+=diff;
+    var dc = diff>0?'color:var(--success)':diff<0?'color:var(--danger)':'color:var(--text3)';
+    aRows+='<tr><td style="padding:6px 10px;border-bottom:1px solid var(--border);">'+item.nm+'</td>'+
+      '<td class="num" style="padding:6px 10px;border-bottom:1px solid var(--border);">'+fmtN(evalAmt)+'</td>'+
+      '<td class="num" style="padding:6px 10px;border-bottom:1px solid var(--border);">'+fmtN(book)+'</td>'+
+      '<td class="num" style="padding:6px 10px;border-bottom:1px solid var(--border);'+dc+'">'+fmtN(diff)+'</td></tr>';
+  });
+
+  // 부채 rows 생성
+  var lRows='';
+  LIABS.forEach(function(item){
+    var book = item.id ? (parseComma(item.id)||0) : (item.v||0);
+    var evalAmt = book;
+    if(item.retire) evalAmt = Math.max(0, book - retireAdj);
+    var diff = evalAmt - book;
+    lEvalSum+=evalAmt; lBookSum+=book; lDiffSum+=diff;
+    var dc = diff!==0?'color:var(--warn)':'color:var(--text3)';
+    lRows+='<tr><td style="padding:6px 10px;border-bottom:1px solid var(--border);">'+item.nm+'</td>'+
+      '<td class="num" style="padding:6px 10px;border-bottom:1px solid var(--border);">'+fmtN(evalAmt)+'</td>'+
+      '<td class="num" style="padding:6px 10px;border-bottom:1px solid var(--border);">'+fmtN(book)+'</td>'+
+      '<td class="num" style="padding:6px 10px;border-bottom:1px solid var(--border);'+dc+'">'+fmtN(diff)+'</td></tr>';
+  });
+
+  window._assetDiffTotal = aDiffSum;
+  window._liabDiffTotal  = lDiffSum;
+  window._evalDiffTotal  = aDiffSum - lDiffSum;
+  setV('ed_assetDiffTotal', aDiffSum);
+  setV('ed_liabAdjTotal', lDiffSum);
+
+  var thStyle='background:var(--surface2);color:var(--text2);padding:8px 10px;font-size:11px;font-weight:600;border-bottom:1px solid var(--border);';
+  var totStyle='background:rgba(79,142,247,.06);font-weight:700;';
+
+  // 엑셀처럼 좌(자산) 우(부채) 2개 테이블 나란히
+  var html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">'+
+    // 자산 테이블
+    '<div><div style="font-size:12px;font-weight:700;color:var(--success);padding:8px 0 6px;">▌ 자산</div>'+
+    '<div class="table-wrap"><table style="width:100%;border-collapse:collapse;font-size:12px;">'+
+    '<thead><tr>'+
+      '<th style="'+thStyle+'min-width:140px;">계정과목</th>'+
+      '<th style="'+thStyle+'text-align:right;">상증법 평가액</th>'+
+      '<th style="'+thStyle+'text-align:right;">재무제표 금액</th>'+
+      '<th style="'+thStyle+'text-align:right;">차액</th>'+
+    '</tr></thead><tbody>'+aRows+
+    '<tr style="'+totStyle+'">'+
+      '<td style="padding:8px 10px;">①자산 합계</td>'+
+      '<td class="num" style="padding:8px 10px;">'+fmtN(aEvalSum)+'</td>'+
+      '<td class="num" style="padding:8px 10px;">'+fmtN(aBookSum)+'</td>'+
+      '<td class="num" style="padding:8px 10px;color:var(--success)"><strong>'+fmtN(aDiffSum)+'</strong></td>'+
+    '</tr></tbody></table></div></div>'+
+    // 부채 테이블
+    '<div><div style="font-size:12px;font-weight:700;color:var(--danger);padding:8px 0 6px;">▌ 부채</div>'+
+    '<div class="table-wrap"><table style="width:100%;border-collapse:collapse;font-size:12px;">'+
+    '<thead><tr>'+
+      '<th style="'+thStyle+'min-width:140px;">계정과목</th>'+
+      '<th style="'+thStyle+'text-align:right;">상증법 평가액</th>'+
+      '<th style="'+thStyle+'text-align:right;">재무제표 금액</th>'+
+      '<th style="'+thStyle+'text-align:right;">차액</th>'+
+    '</tr></thead><tbody>'+lRows+
+    '<tr style="'+totStyle+'">'+
+      '<td style="padding:8px 10px;">②부채 합계</td>'+
+      '<td class="num" style="padding:8px 10px;">'+fmtN(lEvalSum)+'</td>'+
+      '<td class="num" style="padding:8px 10px;">'+fmtN(lBookSum)+'</td>'+
+      '<td class="num" style="padding:8px 10px;color:var(--danger)"><strong>'+fmtN(lDiffSum)+'</strong></td>'+
+    '</tr></tbody></table></div></div>'+
+    '</div>'+
+    // 최종 합계
+    '<div style="background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.25);border-radius:8px;padding:14px 20px;margin-top:14px;display:flex;align-items:center;justify-content:space-between;">'+
+      '<span style="font-weight:700;font-size:14px;">가. 평가차액 계산 (①자산차액 − ②부채차액)</span>'+
+      '<span style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--gold);">'+fmtN(aDiffSum-lDiffSum)+'원</span>'+
+    '</div>';
+
+  var area=document.getElementById('evalDiffTableArea');
+  if(area) area.innerHTML=html;
+  calcNetAsset();
+}
+
+
+// ============================================================
+// RENDER EVAL DIFF OUTPUT — 엑셀 평가차액명세서(출력) 탭 기준
+// 모든 계정과목 0이라도 전부 표시
+// ============================================================
+function renderEvalDiffOut(){
+  var output=document.getElementById('evalDiffOutput');
+  if(!output) return;
+  var corpName=document.getElementById('corpName').value||'—';
+  var evalDate=document.getElementById('evalDate').value||'—';
+
+  // 엑셀 평가차액명세서(출력) 탭 기준 순서
+  var ASSETS=[
+    {nm:'현금및현금성자산',      id:'a_cash'},
+    {nm:'단기금융상품',          id:'a_stDeposit'},
+    {nm:'단기매매증권',          id:'a_trading',     win:'_secEval'},
+    {nm:'외상매출금',            id:'a_ar'},
+    {nm:'단기대여금',            id:'a_stLoan'},
+    {nm:'미수수익',              id:'a_accrued'},
+    {nm:'미수금',                id:'a_other_ar'},
+    {nm:'선급금',                id:'a_prepaid'},
+    {nm:'선급비용',              id:'a_prepaidExp'},
+    {nm:'선급법인세/부가세대급금',id:'a_preTax'},
+    {nm:'이연법인세자산',        id:'a_deferTax'},
+    {nm:'제품',                  id:'a_goods'},
+    {nm:'원재료',                id:'a_rawmat'},
+    {nm:'장기금융상품',          id:'a_ltDeposit'},
+    {nm:'매도가능증권',          id:'a_mav'},
+    {nm:'지분법적용투자주식',    id:'a_equity'},
+    {nm:'토지',                  id:'a_land_book',   win:'_landEval'},
+    {nm:'건물',                  id:'a_building_book',win:'_buildingEval'},
+    {nm:'구축물',                id:'a_struct_book', win:'_otherEval'},
+    {nm:'기계장치',              id:'a_mach_book',   win:'_machEval'},
+    {nm:'차량운반구',            id:'a_vehicle_book',win:'_vehicleEval'},
+    {nm:'개발비',                id:'a_devCost'},
+    {nm:'비품',                  id:'a_equip_book'},
+    {nm:'시설장치',              id:'a_fac_book'},
+    {nm:'건설중인자산',          id:'a_constInProg'},
+    {nm:'상해보험예치금',        id:'a_insurance'},
+    {nm:'회원권',                id:'a_membership',  win:'_membershipEval'},
+    {nm:'보증금',                id:'a_deposit'},
+    {nm:'장기외상매출금',        id:null, v:0},
+    {nm:'퇴직보험예치금',        id:null, v:0},
+    {nm:'무체재산권',            id:'a_intangible'},
+  ];
+
+  var LIABS=[
+    {nm:'매입채무',              id:'l_ap'},
+    {nm:'미지급금',              id:'l_accruedL'},
+    {nm:'예수금',                id:'l_deposit'},
+    {nm:'선수금',                id:'l_advance'},
+    {nm:'단기차입금',            id:'l_stBorrow'},
+    {nm:'당기법인세부채/미지급법인세', id:'l_taxPay'},
+    {nm:'미지급비용',            id:'l_accruedExp'},
+    {nm:'유동성장기부채',        id:'l_currLT'},
+    {nm:'하자보수충당금',        id:null, v:0},
+    {nm:'미지급배당금',          id:'l_divPay'},
+    {nm:'장기차입금',            id:'l_ltBorrow'},
+    {nm:'퇴직급여충당부채',      id:'l_retire', retire:true},
+    {nm:'외화장기차입금',        id:'l_fxBorrow'},
+    {nm:'전환사채',              id:'l_convertBond'},
+    {nm:'영업보증금',            id:'l_bizGuarantee'},
+    {nm:'이연법인세부채',        id:'l_deferTaxL'},
+    {nm:'연구및인력개발준비금',  id:null, v:0},
+  ];
+
+  var retireAdj = readBsVal('l_retireFund');
+  var aEvalSum=0, aBookSum=0, aDiffSum=0;
+  var lEvalSum=0, lBookSum=0, lDiffSum=0;
+
+  var thS='background:var(--surface2);color:var(--text2);padding:7px 10px;font-size:11px;font-weight:600;border:1px solid var(--border);';
+  var tdS='padding:6px 10px;border:1px solid var(--border);font-size:12px;';
+
+  var aRowsHtml='';
+  ASSETS.forEach(function(item){
+    var book = item.id ? getBookVal(item.id) : (item.v||0);
+    if(book===0 && item.id){var el=document.getElementById(item.id);if(el&&el.tagName==='INPUT')book=parseComma(item.id)||0;}
+    var evalAmt = item.win ? (window[item.win]||book) : book;
+    var diff = evalAmt - book;
+    aEvalSum+=evalAmt; aBookSum+=book; aDiffSum+=diff;
+    var dc = diff>0?'color:var(--success)':diff<0?'color:var(--danger)':'color:var(--text3)';
+    aRowsHtml+='<tr>'+
+      '<td style="'+tdS+'">'+item.nm+'</td>'+
+      '<td style="'+tdS+'text-align:right;">'+fmtN(evalAmt)+'</td>'+
+      '<td style="'+tdS+'text-align:right;">'+fmtN(book)+'</td>'+
+      '<td style="'+tdS+'text-align:right;'+dc+'">'+fmtN(diff)+'</td></tr>';
+  });
+
+  var lRowsHtml='';
+  LIABS.forEach(function(item){
+    var book = item.id ? (parseComma(item.id)||0) : (item.v||0);
+    var evalAmt = book;
+    if(item.retire) evalAmt = Math.max(0, book - retireAdj);
+    var diff = evalAmt - book;
+    lEvalSum+=evalAmt; lBookSum+=book; lDiffSum+=diff;
+    var dc = diff!==0?'color:var(--warn)':'color:var(--text3)';
+    lRowsHtml+='<tr>'+
+      '<td style="'+tdS+'">'+item.nm+'</td>'+
+      '<td style="'+tdS+'text-align:right;">'+fmtN(evalAmt)+'</td>'+
+      '<td style="'+tdS+'text-align:right;">'+fmtN(book)+'</td>'+
+      '<td style="'+tdS+'text-align:right;'+dc+'">'+fmtN(diff)+'</td></tr>';
+  });
+
+  // 추가 부채 조정
+  var retireEst=parseComma('ed_retireEst')||0;
+  var divAcc=parseComma('ed_divAccrual')||0;
+  var unbookTax=parseComma('ed_unbookTax')||0;
+  var unbookRural=parseComma('ed_unbookRural')||0;
+  var unbookLocal=parseComma('ed_unbookLocal')||0;
+  var otherLiab=parseComma('ed_otherLiab')||0;
+  var extraLiab=retireEst+divAcc+unbookTax+unbookRural+unbookLocal+otherLiab;
+  if(extraLiab!==0){
+    lRowsHtml+='<tr><td style="'+tdS+'color:var(--warn);">퇴직급여추계·배당·손익미계상세액 등</td>'+
+      '<td style="'+tdS+'text-align:right;color:var(--warn);">'+fmtN(extraLiab)+'</td>'+
+      '<td style="'+tdS+'">—</td><td style="'+tdS+'">—</td></tr>';
+    lDiffSum+=extraLiab;
+  }
+
+  var evalDiffFinal = aDiffSum - lDiffSum;
+  window._evalDiffTotal = evalDiffFinal;
+
+  var totRowA='<tr style="background:rgba(52,211,153,.08);font-weight:700;">'+
+    '<td style="'+tdS+'">①합계</td>'+
+    '<td style="'+tdS+'text-align:right;">'+fmtN(aEvalSum)+'</td>'+
+    '<td style="'+tdS+'text-align:right;">'+fmtN(aBookSum)+'</td>'+
+    '<td style="'+tdS+'text-align:right;color:var(--success)">'+fmtN(aDiffSum)+'</td></tr>';
+
+  var totRowL='<tr style="background:rgba(248,113,113,.08);font-weight:700;">'+
+    '<td style="'+tdS+'">②합계</td>'+
+    '<td style="'+tdS+'text-align:right;">'+fmtN(lEvalSum)+'</td>'+
+    '<td style="'+tdS+'text-align:right;">'+fmtN(lBookSum)+'</td>'+
+    '<td style="'+tdS+'text-align:right;color:var(--danger)">'+fmtN(lDiffSum)+'</td></tr>';
+
+  output.innerHTML=
+    '<div style="font-weight:700;font-size:15px;margin-bottom:4px;color:var(--gold);">5. 평가차액 — '+corpName+'</div>'+
+    '<div style="font-size:12px;color:var(--text3);margin-bottom:16px;">평가기준일: '+evalDate+' &nbsp;|&nbsp; [평가심의위원회 운영규정 별지 제4호 서식 부표3] (단위: 원)</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">'+
+      // 자산
+      '<div>'+
+      '<div style="font-size:12px;font-weight:700;color:var(--success);padding:6px 0;">▌ 자산 금액</div>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:12px;">'+
+      '<thead><tr>'+
+        '<th style="'+thS+'min-width:140px;">계정과목</th>'+
+        '<th style="'+thS+'text-align:right;">상증법 평가액</th>'+
+        '<th style="'+thS+'text-align:right;">재무제표 금액</th>'+
+        '<th style="'+thS+'text-align:right;">차액</th>'+
+      '</tr></thead><tbody>'+aRowsHtml+totRowA+'</tbody></table></div>'+
+      // 부채
+      '<div>'+
+      '<div style="font-size:12px;font-weight:700;color:var(--danger);padding:6px 0;">▌ 부채 금액</div>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:12px;">'+
+      '<thead><tr>'+
+        '<th style="'+thS+'min-width:140px;">계정과목</th>'+
+        '<th style="'+thS+'text-align:right;">상증법 평가액</th>'+
+        '<th style="'+thS+'text-align:right;">재무제표 금액</th>'+
+        '<th style="'+thS+'text-align:right;">차액</th>'+
+      '</tr></thead><tbody>'+lRowsHtml+totRowL+'</tbody></table></div>'+
+    '</div>'+
+    '<div style="background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.3);border-radius:8px;padding:16px 20px;margin-top:16px;display:flex;justify-content:space-between;align-items:center;">'+
+      '<div><div style="font-size:13px;font-weight:700;">가. 평가차액 계산 (①자산차액 − ②부채차액)</div>'+
+      '<div style="font-size:11px;color:var(--text3);margin-top:2px;">제2쪽 4. 순자산가액 "가"의 ②기재</div></div>'+
+      '<div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--gold);">'+fmtN(evalDiffFinal)+'원</div>'+
+    '</div>';
+
+  var checkEl=document.getElementById('evalDiffCheck');
+  if(checkEl) checkEl.innerHTML='<span class="ok-badge">평가차액: '+fmtN(evalDiffFinal)+'원</span>';
+  calcNetAsset();
 }
 
 function calcAll(){
@@ -1487,123 +2073,149 @@ function calcAll(){
 // ============================================================
 // LAND CALCULATION
 // ============================================================
+// ============================================================
+// LAND CALCULATION — 엑셀 H6/K6/L6 수식
+// H = 취득가액(E) - 감가상각누계(F) + 유보금액(G)
+// J = IF(시가M≠0, M, MAX(H, 기준시가I))
+// K = IF(E3>0, E3 × J / ΣJ, J)   ← 저당권 안분 (엑셀 K6)
+// L = MAX(H, I, K)                ← 최종평가 (엑셀 L6)
+// ============================================================
 let landRowCount=1;
 function addLandRow(){
-  const tbody=document.getElementById('landBody');
-  const n=landRowCount++;
-  const tr=document.createElement('tr');
-  tr.innerHTML=`
-    <td><input type="text" value="토지${n+1}" style="width:70px;"></td>
-    <td><input type="text" style="min-width:140px;" placeholder="소재지 입력"></td>
-    <td><input type="text" oninput="formatComma(this)" value="0" style="width:90px;"></td>
-    <td><input type="text" class="red-input" id="land${n}_acq" oninput="formatComma(this);calcLand()" value="0"></td>
-    <td><input type="text" id="land${n}_depr" oninput="formatComma(this);calcLand()" value="0"></td>
-    <td><input type="text" id="land${n}_yebo" oninput="formatComma(this);calcLand()" value="0"></td>
-    <td class="num"><span id="land${n}_book">—</span></td>
-    <td><input type="text" class="red-input" id="land${n}_pv" oninput="formatComma(this);calcLand()" value="0"></td>
-    <td><input type="text" id="land${n}_pledge" oninput="formatComma(this);calcLand()" value="0"></td>
-    <td class="num" style="color:var(--gold);"><strong><span id="land${n}_eval">—</span></strong></td>
-    <td><button class="btn-del" onclick="delRow(this,'landBody');calcLand()">✕</button></td>`;
+  var tbody=document.getElementById('landBody');
+  var n=landRowCount++;
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td><input type="text" value="토지'+n+'" style="width:60px;"></td>'+
+    '<td><input type="text" style="min-width:120px;" placeholder="소재지"></td>'+
+    '<td><input type="text" oninput="formatComma(this)" value="0" style="width:70px;"></td>'+
+    '<td><input type="text" class="red-input" oninput="formatComma(this);calcLand()" value="0" placeholder="취득가액"></td>'+
+    '<td><input type="text" oninput="formatComma(this);calcLand()" value="0" placeholder="감가누계"></td>'+
+    '<td><input type="text" oninput="formatComma(this);calcLand()" value="0" placeholder="유보금액"></td>'+
+    '<td class="num" style="color:var(--accent);"><span class="land_book">—</span></td>'+
+    '<td><input type="text" class="red-input" oninput="formatComma(this);calcLand()" value="0" placeholder="기준시가"></td>'+
+    '<td class="num"><span class="land_j">—</span></td>'+
+    '<td class="num" style="color:var(--warn);"><span class="land_k">—</span></td>'+
+    '<td><input type="text" oninput="formatComma(this);calcLand()" value="0" placeholder="시가(없으면0)"></td>'+
+    '<td class="num" style="color:var(--gold);font-weight:700;"><span class="land_l">—</span></td>'+
+    '<td><button class="btn-del" onclick="delRow(this,\'landBody\');calcLand()">x</button></td>';
   tbody.appendChild(tr);
 }
 
 function calcLand(){
-  const rows=document.querySelectorAll('#landBody tr');
-  let total=0;
-  let bookTotal=0;
-  rows.forEach((row,i)=>{
-    const inputs=row.querySelectorAll('input[type=text]');
-    if(inputs.length<9)return;
-    const acq=parseCommaEl(inputs[3])||0;
-    const depr=parseCommaEl(inputs[4])||0;
-    const yebo=parseCommaEl(inputs[5])||0;
-    const book=acq-depr+yebo;
-    const pv=parseCommaEl(inputs[7])||0;
-    const pledge=parseCommaEl(inputs[8])||0;
-    const evalAmt=Math.max(book,pv,pledge);
-    const bookSpan=row.querySelector(`[id*="_book"]`);
-    const evalSpan=row.querySelector(`[id*="_eval"]`);
-    if(bookSpan)bookSpan.textContent=fmtN(book);
-    if(evalSpan)evalSpan.textContent=fmtN(evalAmt);
-    total+=evalAmt;
-    bookTotal+=book;
-  });
-  setV('landTotal',total);
-  // Sync to BS tab06 — 취득가·감가상각·장부가 스팬
-  var acqSum=0, deprSum=0;
+  // 저당권 C2/E2/E3 계산
+  var c3=parseComma('pledge_c3')||0;
+  var c4=parseComma('pledge_c4')||0;
+  var c2=c3+c4;
+  var e2=parseComma('pledge_e2')||0;
+  var e3=Math.min(c2,e2);
+  var c2el=document.getElementById('pledge_c2');
+  if(c2el) c2el.value=c2.toLocaleString('ko-KR');
+  var e3el=document.getElementById('pledge_e3');
+  if(e3el) e3el.value=e3.toLocaleString('ko-KR');
+  var applyEl=document.getElementById('pledge_apply');
+  if(applyEl){
+    applyEl.textContent=e3>0?'적용(E3='+fmtN(e3)+')':'미적용';
+    applyEl.style.color=e3>0?'var(--success)':'var(--text3)';
+  }
+
+  // 1패스: 각 행 H, I, J 계산 → ΣJ 구하기
+  var rows=document.querySelectorAll('#landBody tr');
+  var sumJ=0, bookTotal=0, lTotal=0;
+  var rowData=[];
   rows.forEach(function(row){
     var inputs=row.querySelectorAll('input[type=text]');
-    if(inputs.length<9)return;
-    acqSum+=parseCommaEl(inputs[3])||0;
-    deprSum+=parseCommaEl(inputs[4])||0;
+    if(inputs.length<11) return;
+    var acq=parseCommaEl(inputs[3])||0;
+    var depr=parseCommaEl(inputs[4])||0;
+    var yebo=parseCommaEl(inputs[5])||0;
+    var H=acq-depr+yebo;              // H6 = E-F+G
+    var I=parseCommaEl(inputs[7])||0; // 기준시가
+    var M=parseCommaEl(inputs[10])||0; // 시가
+    var J=M>0?M:Math.max(H,I);        // J6 = IF(M<>0, M, MAX(H,I))
+    sumJ+=J;
+    rowData.push({row:row,H:H,I:I,J:J,M:M});
+    bookTotal+=H;
   });
-  var acqEl=document.getElementById('a_land_acq');
-  var deprEl=document.getElementById('a_land_depr');
-  var bookSpan=document.getElementById('a_land_book');
-  if(acqEl)acqEl.value=acqSum.toLocaleString('ko-KR');
-  if(deprEl)deprEl.value=deprSum.toLocaleString('ko-KR');
-  if(bookSpan)bookSpan.textContent=fmtN(total); // 상증법 평가=장부가 기준
-  window._landEval=total;
-  window._landBook=total; // for BS calc span-based read
+
+  // 2패스: K, L 계산 후 표시
+  rowData.forEach(function(d){
+    var K=e3>0&&sumJ>0?(e3*d.J/sumJ):d.J; // K6 = IF(E3>0, E3*J/ΣJ, J)
+    var L=Math.max(d.H,d.I,K);             // L6 = MAX(H,I,K)
+    lTotal+=L;
+    var bk=d.row.querySelector('.land_book'); if(bk) bk.textContent=fmtN(d.H);
+    var jj=d.row.querySelector('.land_j');   if(jj) jj.textContent=fmtN(d.J);
+    var kk=d.row.querySelector('.land_k');   if(kk) kk.textContent=fmtN(K);
+    var ll=d.row.querySelector('.land_l');   if(ll) ll.textContent=fmtN(L);
+  });
+
+  setV('landTotalJ',sumJ);
+  setV('landTotalK',e3>0?e3:sumJ);
+  setV('landTotal',lTotal);
+  window._landEval=lTotal;
+  window._landBook=bookTotal;
+  // span에 textContent로 업데이트 (input이 아닌 span)
+  var landBookSpan=document.getElementById('a_land_book');
+  if(landBookSpan) landBookSpan.textContent=fmtN(bookTotal);
+  var lbLand=document.getElementById('lb_land');
+  if(lbLand) lbLand.textContent=fmtN(lTotal);
+  // 글로벌 변수로도 저장
+  window._landBook=bookTotal;
+  window._landEval=lTotal;
   calcBuilding();
 }
 
+// ============================================================
+// BUILDING CALCULATION
+// H = E - F + G,  평가액 = MAX(H, 기준시가I, 담보채권K)
+// ============================================================
 let buildingRowCount=1;
 function addBuildingRow(){
-  const tbody=document.getElementById('buildingBody');
-  const n=buildingRowCount++;
-  const tr=document.createElement('tr');
-  tr.innerHTML=`
-    <td><input type="text" value="건물${n+1}" style="width:70px;"></td>
-    <td><input type="text" style="min-width:140px;" placeholder="소재지 입력"></td>
-    <td><input type="text" class="red-input" id="bld${n}_acq" oninput="formatComma(this);calcBuilding()" value="0"></td>
-    <td><input type="text" id="bld${n}_depr" oninput="formatComma(this);calcBuilding()" value="0"></td>
-    <td><input type="text" id="bld${n}_yebo" oninput="formatComma(this);calcBuilding()" value="0"></td>
-    <td class="num"><span id="bld${n}_book">—</span></td>
-    <td><input type="text" class="red-input" id="bld${n}_pv" oninput="formatComma(this);calcBuilding()" value="0"></td>
-    <td><input type="text" id="bld${n}_pledge" oninput="formatComma(this);calcBuilding()" value="0"></td>
-    <td class="num" style="color:var(--gold);"><strong><span id="bld${n}_eval">—</span></strong></td>
-    <td><button class="btn-del" onclick="delRow(this,'buildingBody');calcBuilding()">✕</button></td>`;
+  var tbody=document.getElementById('buildingBody');
+  var n=buildingRowCount++;
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td><input type="text" value="건물'+n+'" style="width:60px;"></td>'+
+    '<td><input type="text" style="min-width:120px;" placeholder="소재지"></td>'+
+    '<td><input type="text" class="red-input" oninput="formatComma(this);calcBuilding()" value="0" placeholder="취득가액"></td>'+
+    '<td><input type="text" oninput="formatComma(this);calcBuilding()" value="0" placeholder="감가누계"></td>'+
+    '<td><input type="text" oninput="formatComma(this);calcBuilding()" value="0" placeholder="유보금액"></td>'+
+    '<td class="num" style="color:var(--accent);"><span class="bld_book">—</span></td>'+
+    '<td><input type="text" class="red-input" oninput="formatComma(this);calcBuilding()" value="0" placeholder="기준시가"></td>'+
+    '<td class="num"><span class="bld_j">—</span></td>'+
+    '<td><input type="text" oninput="formatComma(this);calcBuilding()" value="0" placeholder="담보채권액"></td>'+
+    '<td class="num" style="color:var(--gold);font-weight:700;"><span class="bld_l">—</span></td>'+
+    '<td><button class="btn-del" onclick="delRow(this,\'buildingBody\');calcBuilding()">x</button></td>';
   tbody.appendChild(tr);
 }
 
 function calcBuilding(){
-  const rows=document.querySelectorAll('#buildingBody tr');
-  let total=0,bookTotal=0;
-  rows.forEach(row=>{
-    const inputs=row.querySelectorAll('input[type=text]');
-    if(inputs.length<8)return;
-    const acq=parseCommaEl(inputs[2])||0;
-    const depr=parseCommaEl(inputs[3])||0;
-    const yebo=parseCommaEl(inputs[4])||0;
-    const book=acq-depr+yebo;
-    const pv=parseCommaEl(inputs[6])||0;
-    const pledge=parseCommaEl(inputs[7])||0;
-    const evalAmt=Math.max(book,pv,pledge);
-    const bookSpan=row.querySelector(`[id*="_book"]`);
-    const evalSpan=row.querySelector(`[id*="_eval"]`);
-    if(bookSpan)bookSpan.textContent=fmtN(book);
-    if(evalSpan)evalSpan.textContent=fmtN(evalAmt);
-    total+=evalAmt;
-    bookTotal+=book;
-  });
-  setV('buildingTotal',total);
-  const landEval=window._landEval||0;
-  setV('landBuildTotal',landEval+total);
-  // Sync to BS tab06
-  var bacqSum=0,bdeprSum=0;
+  var rows=document.querySelectorAll('#buildingBody tr');
+  var total=0,bookTotal=0;
   rows.forEach(function(row){
     var inputs=row.querySelectorAll('input[type=text]');
-    if(inputs.length<8)return;
-    bacqSum+=parseCommaEl(inputs[2])||0;
-    bdeprSum+=parseCommaEl(inputs[3])||0;
+    if(inputs.length<9) return;
+    var acq=parseCommaEl(inputs[2])||0;
+    var depr=parseCommaEl(inputs[3])||0;
+    var yebo=parseCommaEl(inputs[4])||0;
+    var H=acq-depr+yebo;              // H = E-F+G
+    var I=parseCommaEl(inputs[6])||0; // 기준시가
+    var K=parseCommaEl(inputs[8])||0; // 담보채권액
+    var J=Math.max(H,I);              // 평가액
+    var L=Math.max(H,I,K);            // 최종 = MAX(H,I,K)
+    var bk=row.querySelector('.bld_book'); if(bk) bk.textContent=fmtN(H);
+    var jj=row.querySelector('.bld_j');   if(jj) jj.textContent=fmtN(J);
+    var ll=row.querySelector('.bld_l');   if(ll) ll.textContent=fmtN(L);
+    total+=L;
+    bookTotal+=H;
   });
-  var bacqEl=document.getElementById('a_bld_acq');
-  var bdeprEl=document.getElementById('a_bld_depr');
-  var bbookSpan=document.getElementById('a_building_book');
-  if(bacqEl)bacqEl.value=bacqSum.toLocaleString('ko-KR');
-  if(bdeprEl)bdeprEl.value=bdeprSum.toLocaleString('ko-KR');
-  if(bbookSpan)bbookSpan.textContent=fmtN(bookTotal);
+  setV('buildingTotal',total);
+  var landEval=window._landEval||0;
+  setV('landBuildTotal',landEval+total);
+  var lbBld=document.getElementById('lb_building');
+  if(lbBld) lbBld.textContent=fmtN(total);
+  var bldBookSpan=document.getElementById('a_building_book');
+  if(bldBookSpan) bldBookSpan.textContent=fmtN(bookTotal);
+  window._buildingBook=bookTotal;
+  window._buildingEval=total;
   window._buildingEval=total;
   window._buildingBook=bookTotal;
   calcEvalDiff();
@@ -1792,6 +2404,15 @@ function calcAssetLine(acqId, deprId, yeboId, bookSpanId){
   window['_bs_'+bookSpanId] = book;
   calcBS();
 }
+// span or input 모두 읽는 통합 함수
+function readBsVal(id){
+  var el = document.getElementById(id);
+  if(!el) return 0;
+  var txt = (el.tagName==='INPUT'||el.tagName==='SELECT') ? el.value : el.textContent;
+  txt = (txt||'').replace(/[,— ]/g,'');
+  return parseFloat(txt)||0;
+}
+
 function getBookVal(spanId){
   // Read book value from span (set by calcAssetLine)
   var el = document.getElementById(spanId);
@@ -1973,69 +2594,9 @@ function calcNetAsset(){
 // EVAL DIFF CALC
 // ============================================================
 function calcEvalDiff(){
-  const landEval=window._landEval||0;
-  const landBook=window._landBook||0;
-  const buildEval=window._buildingEval||0;
-  const buildBook=window._buildingBook||0;
-  const machEval=window._machEval||0;
-  const machBook=window._machBook||0;
-  const vehicleEval=window._vehicleEval||0;
-  const vehicleBook=window._vehicleBook||0;
-
-  const membershipDiff=parseComma('ed_membership_diff')||0;
-  const tradingDiff=parseComma('ed_trading_diff')||0;
-
-  const assetEval=landEval+buildEval+machEval+vehicleEval+
-    (window._mavEval||parseComma('a_mav'))+membershipDiff+tradingDiff;
-  const assetBook=(landBook+buildBook+machBook+vehicleBook)+
-    parseComma('a_mav');
-  const totalAssetDiff=landEval-landBook+buildEval-buildBook+machEval-machBook+vehicleEval-vehicleBook+membershipDiff+tradingDiff;
-
-  // Build eval diff rows
-  const tbody=document.getElementById('evalDiffBody');
-  if(tbody){
-    tbody.innerHTML=`
-      <tr><td colspan="2">토지</td>
-        <td class="num">${fmtN(landEval)}</td><td class="num">${fmtN(landBook)}</td>
-        <td class="num" style="color:var(--${landEval-landBook>=0?'success':'danger'})">${fmtN(landEval-landBook)}</td>
-        <td colspan="2">매입채무</td>
-        <td class="num">${fmtN(parseComma('l_ap'))}</td><td class="num">${fmtN(parseComma('l_ap'))}</td><td class="num">0</td></tr>
-      <tr><td colspan="2">건물</td>
-        <td class="num">${fmtN(buildEval)}</td><td class="num">${fmtN(buildBook)}</td>
-        <td class="num" style="color:var(--${buildEval-buildBook>=0?'success':'danger'})">${fmtN(buildEval-buildBook)}</td>
-        <td colspan="2">단기차입금</td>
-        <td class="num">${fmtN(parseComma('l_stBorrow'))}</td><td class="num">${fmtN(parseComma('l_stBorrow'))}</td><td class="num">0</td></tr>
-      <tr><td colspan="2">기계장치</td>
-        <td class="num">${fmtN(machEval)}</td><td class="num">${fmtN(machBook)}</td>
-        <td class="num">${fmtN(machEval-machBook)}</td>
-        <td colspan="2">퇴직급여충당금</td>
-        <td class="num">${fmtN(parseComma('l_retire'))}</td><td class="num">${fmtN(parseComma('l_retire'))}</td><td class="num">0</td></tr>
-      <tr><td colspan="2">차량운반구</td>
-        <td class="num">${fmtN(vehicleEval)}</td><td class="num">${fmtN(vehicleBook)}</td>
-        <td class="num">${fmtN(vehicleEval-vehicleBook)}</td>
-        <td colspan="2">장기차입금</td>
-        <td class="num">${fmtN(parseComma('l_ltBorrow'))}</td><td class="num">${fmtN(parseComma('l_ltBorrow'))}</td><td class="num">0</td></tr>
-      <tr><td colspan="2">회원권 평가차액</td>
-        <td class="num">${fmtN(membershipDiff)}</td><td class="num">0</td>
-        <td class="num">${fmtN(membershipDiff)}</td>
-        <td colspan="5"></td></tr>
-      <tr><td colspan="2">단기매매증권 평가차액</td>
-        <td class="num">${fmtN(tradingDiff)}</td><td class="num">0</td>
-        <td class="num">${fmtN(tradingDiff)}</td>
-        <td colspan="5"></td></tr>`;
-  }
-
-  const retireDiff=parseComma('ed_retire_diff')||0;
-  setV('edAssetEval',assetEval);
-  setV('edAssetBook',assetBook);
-  setV('edAssetDiff',totalAssetDiff);
-  setV('edLiabEval',retireDiff);
-  setV('edLiabBook',0);
-  setV('edLiabDiff',retireDiff);
-  setV('totalEvalDiff',totalAssetDiff-retireDiff);
-  window._evalDiffTotal=totalAssetDiff-retireDiff;
-  calcNetAsset();
+  try{buildEvalDiffTable();}catch(e){}
 }
+
 
 // ============================================================
 // REAL ESTATE RATIO
@@ -2734,60 +3295,87 @@ function loadSampleData(){
 
   /* 1년전 2024.12.31 x3 */
   sf('fy1_end','2024-12-31'); sf('y1_ni','1,337,249,190'); sf('y1_income','1,962,865,911');
-  sf('y1_i02','0'); sf('y1_i03','1,881,551'); sf('y1_i04','3,340,000');
-  sf('y1_i04a','468,227,528'); sf('y1_i04b','16,000,000');
-  sf('y1_d05','0'); sf('y1_d06','0'); sf('y1_d07','0'); sf('y1_d08','0');
-  sf('y1_d09','0'); sf('y1_d10','3,540,000'); sf('y1_d11','0'); sf('y1_d12','11,001,049');
-  sf('y1_d13','0'); sf('y1_d13a','19,291,676'); sf('y1_d13b','-144,778,019');
-  sf('y1_d14','28,500,992'); sf('y1_d14a','0'); sf('y1_d15','0'); sf('y1_d16','0');
-  sf('y1_land_tax','0'); sf('y1_unbook_tax','0'); sf('y1_shares','170,000');
-  sf('c_y1_d14','352,944,523'); sf('c_y1_d15','76,287,971'); sf('c_y1_d16','35,294,452');
+  /* 익금산입 항목 */
+  sf('y1_g04','3,540,000');      // 접대비 한도초과
+  sf('y1_g08','11,001,049');     // 가지급금지급이자
+  sf('y1_g12','468,227,528');    // 외화환산이익
+  sf('y1_g13','19,291,676');     // 업무용승용차 손금불산입
+  /* 손금산입 항목 */
+  sf('y1_s01','1,881,551');      // 수입배당금 익금불산입
+  sf('y1_s02','16,000,000');     // 업무용승용차 손금산입
+  sf('y1_s03','-144,778,019');   // 외화환산손실 (음수)
+  /* 기부금 조정 */
+  sf('y1_don_carry','3,340,000'); // 기부금이월 손금산입
+  /* 세액 (이월결손금 공제 전 재계산) */
+  sf('y1_d14','352,944,523');
+  sf('y1_d15','76,287,971');
+  sf('y1_d16','35,294,452');
+  sf('y1_land_tax','0');
+  sf('y1_shares','170,000');
 
   /* 2년전 2023.12.31 x2 */
   sf('fy2_end','2023-12-31'); sf('y2_ni','-259,917,890'); sf('y2_income','-54,019,959');
-  sf('y2_i02','0'); sf('y2_i03','1,811,925'); sf('y2_i04','0');
-  sf('y2_i04a','7,330,261'); sf('y2_i04b','16,000,000');
-  sf('y2_d05','200,000'); sf('y2_d06','0'); sf('y2_d09','3,340,000'); sf('y2_d10','4,101,200');
-  sf('y2_d12','29,938,389'); sf('y2_d13a','18,862,108'); sf('y2_d13b','-159,937,898');
+  sf('y2_g04','4,101,200');      // 접대비 한도초과
+  sf('y2_g06','200,000');        // 벌과금
+  sf('y2_g08','29,938,389');     // 가지급금지급이자
+  sf('y2_g12','7,330,261');      // 외화환산이익
+  sf('y2_g13','18,862,108');     // 업무용승용차 손금불산입
+  sf('y2_s01','1,811,925');      // 수입배당금
+  sf('y2_s02','16,000,000');     // 업무용승용차 손금산입
+  sf('y2_s03','-159,937,898');   // 외화환산손실
+  sf('y2_don_over','3,340,000'); // 기부금 한도초과
   sf('y2_d14','0'); sf('y2_d15','0'); sf('y2_d16','0');
-  sf('y2_unbook_tax','0'); sf('y2_shares','170,000');
-  sf('c_y2_d14','0'); sf('c_y2_d15','0'); sf('c_y2_d16','0');
+  sf('y2_land_tax','0'); sf('y2_shares','170,000');
 
   /* 3년전 2022.12.31 x1 */
   sf('fy3_end','2022-12-31'); sf('y3_ni','2,529,221,697'); sf('y3_income','2,272,276,902');
-  sf('y3_i02','0'); sf('y3_i03','1,965,575'); sf('y3_i04','0');
-  sf('y3_i04a','-40,235,463'); sf('y3_i04b','10,856,884');
-  sf('y3_d05','798,440'); sf('y3_d06','0'); sf('y3_d09','0'); sf('y3_d10','2,805,000');
-  sf('y3_d12','74,468,944'); sf('y3_d13a','18,862,108'); sf('y3_d13b','300,821,365');
-  sf('y3_d14','0'); sf('y3_d15','0'); sf('y3_d16','0');
-  sf('y3_unbook_tax','0'); sf('y3_shares','170,000');
-  sf('c_y3_d14','434,455,380'); sf('c_y3_d15','38,545,060'); sf('c_y3_d16','43,445,538');
+  sf('y3_g04','2,805,000');      // 접대비 한도초과
+  sf('y3_g06','798,440');        // 벌과금
+  sf('y3_g08','74,468,944');     // 가지급금지급이자
+  sf('y3_g12','-40,235,463');    // 외화환산이익(음수=손실)
+  sf('y3_g13','18,862,108');     // 업무용승용차 손금불산입
+  sf('y3_s01','1,965,575');      // 수입배당금
+  sf('y3_s02','10,856,884');     // 업무용승용차 손금산입
+  sf('y3_s03','300,821,365');    // 외화환산손실
+  sf('y3_d14','434,455,380');
+  sf('y3_d15','38,545,060');
+  sf('y3_d16','43,445,538');
+  sf('y3_land_tax','0'); sf('y3_shares','170,000');
 
-  /* 토지 */
+  /* 저당권 입력 (엑셀 C3/C4/E2) — 클로드 샘플은 0 */
+  sf('pledge_c3','0'); sf('pledge_c4','0'); sf('pledge_e2','0');
+
+  /* 토지: 장지동 454
+     H = 취득가액(4,538,435,606) - 감가(0) + 유보(3,935,938,294) = 8,474,373,900
+     기준시가(I) = 0 → J = MAX(H,0) = 8,474,373,900 = 엑셀 H6 일치 */
   var lr=document.querySelectorAll('#landBody tr');
   if(lr[0]){
     var li=lr[0].querySelectorAll('input[type=text]');
-    if(li[0])li[0].value='장지동 454';
-    if(li[1])li[1].value='경기도 광주시 장지동 454';
-    if(li[2])li[2].value='0';
-    if(li[3])li[3].value='4,538,435,606';
-    if(li[4])li[4].value='0';
-    if(li[5])li[5].value='3,935,938,294';
-    if(li[7])li[7].value='0';
-    if(li[8])li[8].value='0';
+    if(li[0])li[0].value='장지동 454';           // 구분
+    if(li[1])li[1].value='경기도 광주시 장지동 454'; // 소재지
+    if(li[2])li[2].value='0';                    // 면적
+    if(li[3])li[3].value='4,538,435,606';        // 취득가액(E)
+    if(li[4])li[4].value='0';                    // 감가상각누계(F)=0 토지는 감가없음
+    if(li[5])li[5].value='3,935,938,294';        // 유보금액(G) — 공시지가 차액 유보
+    // li[6]=H(자동), li[7]=기준시가(I), li[8]=J(자동), li[9]=K(자동)
+    if(li[7])li[7].value='0';                    // 기준시가I=0 (유보로 이미 반영)
+    if(li[10])li[10].value='0';                  // 시가M=0
   }
 
-  /* 건물 */
+  /* 건물: 취득가(5,471,335,911) - 감가(2,446,145,857) + 유보(-315,922,214) = 2,709,267,840
+     기준시가(I)=0 → 최종평가=2,709,267,840 = 엑셀 H20/L20 일치 */
   var br=document.querySelectorAll('#buildingBody tr');
   if(br[0]){
     var bi=br[0].querySelectorAll('input[type=text]');
-    if(bi[0])bi[0].value='건물1';
+    if(bi[0])bi[0].value='건물(장지동 450)';
     if(bi[1])bi[1].value='경기도 광주시 장지동 450';
-    if(bi[2])bi[2].value='5,471,335,911';
-    if(bi[3])bi[3].value='2,446,145,857';
-    if(bi[4])bi[4].value='-315,922,214';
-    if(bi[6])bi[6].value='0';
-    if(bi[7])bi[7].value='0';
+    if(bi[2])bi[2].value='5,471,335,911';        // 취득가액(E)
+    if(bi[3])bi[3].value='2,446,145,857';        // 감가상각누계(F)
+    if(bi[4])bi[4].value='-315,922,214';         // 유보금액(G) — 음수 유보
+    // bi[5]=H(자동계산)
+    if(bi[6])bi[6].value='0';                    // 기준시가I=0
+    // bi[7]=MAX(H,I) 자동
+    if(bi[8])bi[8].value='0';                    // 담보채권액=0
   }
 
   /* 기계장치 */
@@ -2916,9 +3504,12 @@ function loadSampleData(){
   sf('eq_revalReserve','147,490,000'); sf('eq_capSurplus','0');
 
   /* 평가차액 추가 */
-  sf('ed_trading_diff','3,089,919'); sf('ed_membership_diff','254,767,093');
-  sf('ed_retire_diff','0'); sf('ed_retireEst','0');
-  sf('ed_divAccrual','0'); sf('ed_unbookTax','0');
+  /* 평가차액 부채조정 항목 */
+  sf('ed_retireEst','0'); sf('ed_divAccrual','0');
+  sf('ed_unbookTax','0'); sf('ed_unbookRural','0');
+  sf('ed_unbookLocal','0'); sf('ed_otherLiab','0');
+  /* 회원권 상증법 평가액 = 436,363,636 (엑셀 회원권 탭 기준) */
+  window._membershipEval = 436363636;
 
   /* 주주 현황 */
   var shBody=document.getElementById('shBody');
@@ -2966,7 +3557,8 @@ function runAllCalcs(){
   try{calcAsset('otherBody');}catch(e){}
   try{calcBS();}catch(e){}
   try{calcShareholder();}catch(e){}
-  try{calcEvalDiff();}catch(e){}
+  try{buildEvalDiffTable();}catch(e){}
+  try{renderEvalDiffOut();}catch(e){}
   try{calcRealEstate();}catch(e){}
   try{renderFinalResults();}catch(e){}
 }
